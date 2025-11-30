@@ -7,7 +7,10 @@ module.exports.createUser = async (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
     const image = req.body.image;
-    if (!name || !email || !password || !image) {
+    const gender = req.body.gender;
+    const phonenumber = req.body.phonenumber;
+
+    if (!name || !email || !password || !image || !gender || !phonenumber) {
       return res.status(400).send({ message: "all fields are required" });
     }
 
@@ -23,17 +26,17 @@ module.exports.createUser = async (req, res) => {
       email: email,
       password: hashedPassword,
       image: image,
+      gender: gender,
+      phonenumber: phonenumber,
     })
       .then(() => {
         return res.status(201).send({ message: "user created successfully" });
       })
       .catch((err) => {
-        return res
-          .status(500)
-          .send({ message: "error while creating new user" });
+        return res.status(500).send({ message: err });
       });
   } catch (err) {
-    console.log("error while sign up : ", err);
+    return res.status(500).send({ message: err });
   }
 };
 

@@ -1,7 +1,6 @@
 const Sequelize = require("sequelize");
 const sequelize = require("../util/db");
-
-const User = sequelize.define("user", {
+const Meal = sequelize.define("meal", {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
@@ -12,31 +11,21 @@ const User = sequelize.define("user", {
     type: Sequelize.STRING,
     allowNull: false,
   },
-  email: {
-    type: Sequelize.STRING,
-    allowNull: false,
-    unique: true,
-  },
-  password: {
+  description: {
     type: Sequelize.STRING,
     allowNull: false,
   },
-  phonenumber: {
-    type: Sequelize.STRING,
-    allowNull: true,
-  },
-  role: {
-    type: Sequelize.ENUM("admin", "user"),
+  price: {
+    type: Sequelize.FLOAT,
     allowNull: false,
-    defaultValue: "user",
   },
   image: {
     type: Sequelize.STRING,
-    allowNull: true,
+    allowNull: false,
   },
-  gender: {
-    type: Sequelize.ENUM("male", "female"),
-    allowNull: true,
+  category: {
+    type: Sequelize.STRING,
+    allowNull: false,
   },
 });
-module.exports = User;
+module.exports = Meal;
