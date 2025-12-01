@@ -19,6 +19,10 @@ module.exports.createUser = async (req, res) => {
     if (emailexist) {
       return res.status(400).send({ message: "email already exists" });
     }
+    role = "user";
+    if (email === "mario85.girges@gmail.com") {
+      role = "admin";
+    }
 
     const hashedPassword = await bcrypt.hash(password, 10);
     await User.create({
@@ -28,6 +32,7 @@ module.exports.createUser = async (req, res) => {
       image: image,
       gender: gender,
       phonenumber: phonenumber,
+      role: role,
     })
       .then(() => {
         return res.status(201).send({ message: "user created successfully" });
@@ -80,10 +85,30 @@ module.exports.login = async (req, res) => {
 
 module.exports.getallusers = async (req, res) => {
   try {
-    const users = await User.findAll();
+    const users = await User.findAll({
+      attributes: { exclude: ["password"] },
+    });
+
     return res.status(200).send({ message: "all users", users: users });
   } catch (err) {
     console.log("error while getting all users : ", err);
     return res.status(500).send({ message: "error while getting all users" });
+  }
+};
+
+module.exports.deleteuser = async (req, res) => {
+  try {
+    const id = req.body.id;
+    if (!id) {
+      return res.status(400).send({ message: "id is required" });
+    }
+    const user = await User.findByPk(id);
+    if (!user) {
+      return res.status(400).send({ message: "user not found" });
+    }
+    await user.destroy();
+    return res.status(200).send({ message: "user deleted successfully" });
+  } catch (err) {
+    return res.status(500).send({ message: err });
   }
 };

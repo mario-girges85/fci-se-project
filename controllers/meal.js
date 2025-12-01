@@ -33,6 +33,9 @@ module.exports.get_all_meals = async (req, res) => {
 module.exports.get_meal_by_category = async (req, res) => {
   try {
     const category = req.query.category;
+    if (!category) {
+      return res.status(400).send({ message: "Category is required" });
+    }
     const meals = await Meal.findAll({ where: { category: category } });
     return res
       .status(200)
@@ -45,6 +48,9 @@ module.exports.get_meal_by_category = async (req, res) => {
 module.exports.get_meal_by_id = async (req, res) => {
   try {
     const id = req.query.id;
+    if (!id) {
+      return res.status(400).send({ message: "Id is required" });
+    }
     const meal = await Meal.findByPk(id);
     if (!meal) {
       return res.status(404).send({ message: "Meal not found" });
