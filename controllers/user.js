@@ -68,13 +68,19 @@ module.exports.login = async (req, res) => {
         email: userbyemail.email,
         image: userbyemail.image,
         role: userbyemail.role,
+        gender: userbyemail.gender,
+        phonenumber: userbyemail.phonenumber,
       };
 
       const token = jwt.sign(resdata, process.env.JWT_SECRET);
 
       return res
         .status(200)
-        .send({ message: "logged in successfully ", token: token });
+        .send({
+          message: "logged in successfully ",
+          token: token,
+          user: resdata,
+        });
     } else {
       return res.status(400).send({ message: "invalid email or password 2 " });
     }
