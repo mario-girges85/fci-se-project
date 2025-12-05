@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 const sequelize = require("./util/db");
 const usersRouter = require("./routers/users");
 const mealRouter = require("./routers/meal");
@@ -12,6 +13,7 @@ const app = express();
 const port = 3000;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(cors());
 app.use("/users", usersRouter);
 app.use("/meals", mealRouter);
 app.use("/cart", cartRouter);
