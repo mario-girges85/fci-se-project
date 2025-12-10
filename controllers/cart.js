@@ -40,7 +40,9 @@ module.exports.add_to_cart = async (req, res) => {
 
     if (!created) {
       // If the item already exists, update the quantity
-      await item.update({ quantity: item.quantity + quantity });
+      await item.update({
+        quantity: parseInt(item.quantity) + parseInt(quantity),
+      });
     }
 
     return res.status(200).send({
@@ -156,7 +158,7 @@ module.exports.remove_cart_item = async (req, res) => {
   }
 };
 
-module.exports.clear_cart = async (req, res) => {
+module.exports.clear_cart_items = async (req, res) => {
   try {
     const userId = req.user?.id || req.body.userid;
 
